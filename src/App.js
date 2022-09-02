@@ -5,9 +5,9 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('a new note...')
+  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     noteService.getAll().then(initialNotes => {
@@ -20,8 +20,8 @@ const App = () => {
 
     const noteObject = {
       content: newNote,
-      date: new Date().toISOString(),
       important: Math.random() < 0.5,
+      date: new Date().toISOString(),
       id: notes.length + 1,
     }
 
@@ -91,7 +91,11 @@ const App = () => {
         ))}
       </ul>
       <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
+        <input
+          value={newNote}
+          onChange={handleNoteChange}
+          placeholder='Write your note here'  
+        />
         <button type='submit'>Save</button>
       </form>
       <Footer />
