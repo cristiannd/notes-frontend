@@ -1,12 +1,12 @@
-import { useEffect, useState, useRef } from 'react'
-import loginService from './services/login'
+import { useEffect, useState } from 'react'
 import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
-import NoteForm from './components/NoteForm'
-import Togglable from './components/Togglable'
 import Footer from './components/Footer'
 import noteService from './services/notes'
 import Notes from './pages/Notes'
+import { Route, Routes } from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Navbar from './components/Navbar'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState('')
@@ -30,70 +30,55 @@ const App = () => {
     }
   }, [])
 
-  const noteFormRef = useRef()
-
-  const addNote = noteObject => {
-    noteFormRef.current.toggleVisibility()
-    noteService.create(noteObject).then(returnedNote => {
-      setNotes(notes.concat(returnedNote))
-    })
-  }
-
-  const handleLogin = async event => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
-
-      noteService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-  }
-
   const handleLogout = () => {
     setUser(null)
+    noteService.setToken('')
     window.localStorage.removeItem('loggedNoteappUser')
   }
 
   return (
     <div>
-      <Notification message={errorMessage} />
-      {user === null ? (
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        />
-      ) : (
+      <header>
+        <Navbar />
+        <h1>Notes App</h1>
+      </header>
+      {user && (
         <div>
           <p>{user.name} logged-in</p>
           <button onClick={handleLogout}>logout</button>
-          {
-            <Togglable buttonLabel='New note' ref={noteFormRef}>
-              <NoteForm createNote={addNote} />
-            </Togglable>
-          }
         </div>
       )}
-      <Notes
-        setErrorMessage={setErrorMessage}
-        notes={notes}
-        setNotes={setNotes}
-      />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route
+          path='/login'
+          element={
+            <Login
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+              setUser={setUser}
+              setErrorMessage={setErrorMessage}
+              handleUsernameChange={({ target }) => setUsername(target.value)}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
+            />
+          }
+        />
+        <Route
+          path='/notes'
+          element={
+            <Notes
+              setErrorMessage={setErrorMessage}
+              notes={notes}
+              setNotes={setNotes}
+            />
+          }
+        />
+      </Routes>
+
+      <Notification message={errorMessage} />
+
       <Footer />
     </div>
   )

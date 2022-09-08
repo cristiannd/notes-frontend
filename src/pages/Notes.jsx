@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import noteService from '../services/notes'
 import Note from '../components/Note'
+import Togglable from '../components/Togglable'
+import NoteForm from '../components/NoteForm'
 
-const Notes = ({ setErrorMessage, notes, setNotes }) => {
+const Notes = ({ setErrorMessage, notes, setNotes, user }) => {
   const [showAll, setShowAll] = useState(true)
 
   const notesToShow = showAll ? notes : notes.filter(note => note.important)
@@ -33,9 +35,26 @@ const Notes = ({ setErrorMessage, notes, setNotes }) => {
       })
   }
 
+  const noteFormRef = useRef()
+
+  const addNote = noteObject => {
+    noteFormRef.current.toggleVisibility()
+    noteService.create(noteObject).then(returnedNote => {
+      setNotes(notes.concat(returnedNote))
+    })
+  }
+
   return (
     <div>
-      <h1>Notes App</h1>
+      {user !== null && (
+        <div>
+          {
+            <Togglable buttonLabel='New note' ref={noteFormRef}>
+              <NoteForm createNote={addNote} />
+            </Togglable>
+          }
+        </div>
+      )}
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           Show {showAll ? 'important' : 'all'}
