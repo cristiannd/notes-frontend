@@ -13,8 +13,6 @@ const Notes = ({ notes, setNotes, user, setUser }) => {
     : notes.filter(note => user.favoriteNotes.includes(note.id))
 
   const toggleFavoriteOf = id => {
-    console.log(user)
-
     noteService
       .update(id, user.token)
       .then(returnedNote => {

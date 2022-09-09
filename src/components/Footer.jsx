@@ -11,9 +11,6 @@ const Footer = () => {
       display='flex'
       alignItems='center'
       justifyContent='center'
-      position='fixed'
-      bottom='0'
-      left='0'
     >
       <Typography>
         Note app from{' '}

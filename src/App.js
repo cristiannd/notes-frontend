@@ -6,9 +6,10 @@ import Notes from './pages/Notes'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
-import Navbar from './components/Navbar'
-import { Container, Typography } from '@mui/material'
+// import Navbar from './components/Navbar'
+import { Box, Container } from '@mui/material'
 import User from './components/User'
+import Navbar2 from 'components/Navbar2'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState('')
@@ -37,62 +38,54 @@ const App = () => {
   }, [])
 
   return (
-    <Container
-      maxWidth='md'
-      sx={{ minHeight: '100vh', paddingBottom: '50px' }}
-    >
-      <header>
-        <Navbar user={user} />
-        <Typography
-          component='h1'
-          variant='h1'
-          mt={2}
-          textAlign='center'
-        >
-          Notes App
-        </Typography>
-      </header>
-
-      <User user={user} setUser={setUser} noteService={noteService} />
-      <Routes>
-        <Route path='/' element={<Home />} />
-
-        <Route
-          path='/notes'
-          element={
-            <Notes
-              setErrorMessage={setErrorMessage}
-              notes={notes}
-              setNotes={setNotes}
-              user={user}
-              setUser={setUser}
-            />
-          }
-        />
-        <Route
-          path='/login'
-          element={
-            <Login
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-              user={user}
-              setUser={setUser}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
-              handleUsernameChange={({ target }) =>
-                setUsername(target.value)
-              }
-              handlePasswordChange={({ target }) =>
-                setPassword(target.value)
-              }
-            />
-          }
-        />
-      </Routes>
+    <>
+      <Container
+        maxWidth='md'
+        sx={{ minHeight: '100vh' }}
+      >
+        <Box component='header' pb='5rem'>
+          <Navbar2 user={user} />
+        </Box>
+        <User user={user} setUser={setUser} noteService={noteService} />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route
+            path='/notes'
+            element={
+              <Notes
+                setErrorMessage={setErrorMessage}
+                notes={notes}
+                setNotes={setNotes}
+                user={user}
+                setUser={setUser}
+              />
+            }
+          />
+          <Route
+            path='/login'
+            element={
+              <Login
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                user={user}
+                setUser={setUser}
+                errorMessage={errorMessage}
+                setErrorMessage={setErrorMessage}
+                handleUsernameChange={({ target }) =>
+                  setUsername(target.value)
+                }
+                handlePasswordChange={({ target }) =>
+                  setPassword(target.value)
+                }
+              />
+            }
+          />
+        </Routes>
+      </Container>
       <Footer />
-    </Container>
+    </>
   )
 }
 

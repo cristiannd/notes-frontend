@@ -34,6 +34,7 @@ const Navbar = ({ user }) => {
 
   return (
     <BottomNavigation
+      sx={{ backgroundColor: 'red' }}
       value={value}
       onChange={handleChange}
       aria-label='icon label tabs example'
