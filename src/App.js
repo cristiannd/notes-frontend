@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
-import Footer from './components/Footer'
-import noteService from './services/notes'
-import userService from 'services/users'
-import Notes from './pages/Notes'
 import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import Login from './pages/Login'
-// import Navbar from './components/Navbar'
 import { Box, Container } from '@mui/material'
-import User from './components/User'
-import Navbar2 from 'components/Navbar2'
+import noteService from 'services/notes'
+import userService from 'services/users'
+import Notes from 'pages/Notes'
+import Info from 'pages/Info'
+import Login from 'pages/Login'
+import Footer from 'components/Footer'
+import Navbar from 'components/Navbar'
+import Register from 'pages/Register'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState('')
@@ -24,7 +23,7 @@ const App = () => {
     })
   }, [])
 
-  useEffect( () => {
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem(
       'loggedNoteappUser'
     )
@@ -41,16 +40,16 @@ const App = () => {
     <>
       <Container
         maxWidth='md'
-        sx={{ minHeight: '100vh' }}
+        sx={{
+          minHeight: 'calc(100vh - 3rem)',
+        }}
       >
-        <Box component='header' pb='5rem'>
-          <Navbar2 user={user} />
+        <Box component='header' pb='4rem'>
+          <Navbar user={user} setUser={setUser} />
         </Box>
-        <User user={user} setUser={setUser} noteService={noteService} />
         <Routes>
-          <Route path='/' element={<Home />} />
           <Route
-            path='/notes'
+            path='/'
             element={
               <Notes
                 setErrorMessage={setErrorMessage}
@@ -61,6 +60,9 @@ const App = () => {
               />
             }
           />
+
+          <Route path='/info' element={<Info />} />
+
           <Route
             path='/login'
             element={
@@ -81,6 +83,11 @@ const App = () => {
                 }
               />
             }
+          />
+
+          <Route
+            path='/register'
+            element={<Register user={user} setUser={setUser} />}
           />
         </Routes>
       </Container>

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material'
 
-const Home = () => {
+const Info = () => {
   return (
     <Box>
       <Typography component='p' variant='h6' mt={2}>
@@ -10,4 +10,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Info

@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import loginService from '../services/login'
+import userService from '../services/users'
 
 const Login = ({
   handleUsernameChange,
@@ -22,12 +22,13 @@ const Login = ({
   user,
 }) => {
   const navigate = useNavigate()
+  user && navigate('/')
 
   const handleSubmit = async event => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({
+      const user = await userService.login({
         username,
         password,
       })
@@ -38,7 +39,7 @@ const Login = ({
       )
 
       setUser(user)
-      navigate('/notes')
+      navigate('/')
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -49,11 +50,33 @@ const Login = ({
     }
   }
 
-  user && navigate('/')
+  const styledInput = {
+    '& label.Mui-focused': {
+      color: 'var(--color-primary)',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'var(--color-primary)',
+    },
+    '& .MuiOutlinedInput-root': {
+      '&.Mui-focused fieldset': {
+        borderColor: 'var(--color-primary)',
+      },
+    },
+  }
+
   return (
-    <Container maxWidth='sm'>
-      <Typography mb='2rem' component='h2' variant='h3'>
-        Login
+    <Container
+      maxWidth='sm'
+      sx={{
+        height: 'calc(100vh - 7rem)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        minHeight: '500px',
+      }}
+    >
+      <Typography mb='2rem' component='h2' variant='p'>
+        Iniciar sesión
       </Typography>
       {!user && (
         <FormControl
@@ -72,6 +95,7 @@ const Login = ({
             value={username}
             onChange={handleUsernameChange}
             fullWidth
+            sx={styledInput}
           />
           <TextField
             variant='outlined'
@@ -83,21 +107,20 @@ const Login = ({
             value={password}
             onChange={handlePasswordChange}
             fullWidth
+            sx={styledInput}
           />
           <Button
             sx={{
-              backgroundColor: '#ADFF2F',
-              color: '#242424',
+              backgroundColor: 'var(--color-primary)',
               '&:hover': {
                 backgroundColor: '#2b2b2b',
-                color: '#fff',
               },
             }}
             variant='contained'
             type='submit'
             id='login-button'
           >
-            LOGIN
+            ingresar
           </Button>
         </FormControl>
       )}

@@ -1,16 +1,12 @@
-import { Logout } from '@mui/icons-material'
+import { useState } from 'react'
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  IconButton,
-  Typography,
 } from '@mui/material'
-import { useState } from 'react'
 
 const User = ({ user, setUser }) => {
   const [open, setOpen] = useState(false)
@@ -24,24 +20,21 @@ const User = ({ user, setUser }) => {
   return (
     <>
       {user && (
-        <Box display='flex' alignItems='center'>
-          <Typography>Hi, {user.name} 👋</Typography>
-          <IconButton onClick={() => setOpen(true)}>
-            <Logout />
-          </IconButton>
-        </Box>
+        <Button onClick={() => setOpen(true)}>
+          Cerrar sesión
+        </Button>
       )}
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Log out</DialogTitle>
+        <DialogTitle>Cerrar sesión</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Do you want to close your sesion?
+            ¿Quiéres cerrar la sesión?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button onClick={handleLogout}>Aceptar</Button>
           <Button onClick={() => setOpen(false)} autoFocus>
-            Cancel
+            Cancelar
           </Button>
         </DialogActions>
       </Dialog>
