@@ -1,19 +1,48 @@
+import {
+  Favorite,
+  FavoriteBorderOutlined,
+  Person,
+} from '@mui/icons-material'
+import {
+  Avatar,
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from '@mui/material'
 import PropTypes from 'prop-types'
 
-const Note = ({ note, toggleImportance }) => {
-  const label = note.important ? 'make not important' : 'make important'
+const Note = ({ note, user, toggleFavorite }) => {
+  const isFavorite =
+    user && user.favoriteNotes.includes(note.id) ? (
+      <Favorite />
+    ) : (
+      <FavoriteBorderOutlined />
+    )
 
   return (
-    <li className='note'>
-      <span>{note.content}</span>
-      <button onClick={toggleImportance}>{label}</button>
-    </li>
+    <ListItem
+      className='note'
+      secondaryAction={
+        <IconButton onClick={toggleFavorite}>{isFavorite}</IconButton>
+      }
+    >
+      <ListItemAvatar>
+        <Avatar>
+          <Person />
+        </Avatar>
+      </ListItemAvatar>
+      <ListItemText
+        primary={note.content}
+        secondary={`@${note.user.username}`}
+      />
+    </ListItem>
   )
 }
 
 Note.propTypes = {
   note: PropTypes.object.isRequired,
-  toggleImportance: PropTypes.func.isRequired,
+  toggleFavorite: PropTypes.func.isRequired,
 }
 
 export default Note

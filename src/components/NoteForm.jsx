@@ -1,5 +1,11 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import {
+  Button,
+  FormControl,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 const NoteForm = ({ createNote }) => {
   const [newNote, setNewNote] = useState('')
@@ -10,22 +16,38 @@ const NoteForm = ({ createNote }) => {
 
   const addNote = event => {
     event.preventDefault()
-    createNote({
-      content: newNote,
-      important: false,
-    })
 
+    createNote(newNote)
     setNewNote('')
   }
 
   return (
     <div className='formDiv'>
-      <h2>Create a new note</h2>
+      <Typography component='h3' variant='h5'>
+        Create a new note
+      </Typography>
 
-      <form onSubmit={addNote}>
-        <input value={newNote} id='newNote' onChange={handleChange} />
-        <button type='submit'>Save</button>
-      </form>
+      <FormControl
+        onSubmit={addNote}
+        sx={{ gap: '0.5rem', paddingBottom: '0.5rem' }}
+        fullWidth
+        component='form'
+      >
+        <TextField
+          label='Write a note'
+          variant='filled'
+          value={newNote}
+          id='newNote'
+          onChange={handleChange}
+        />
+        <Button
+          sx={{ width: '100px' }}
+          variant='contained'
+          type='submit'
+        >
+          Save
+        </Button>
+      </FormControl>
     </div>
   )
 }

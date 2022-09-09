@@ -3,72 +3,72 @@ import noteService from '../services/notes'
 import Note from '../components/Note'
 import Togglable from '../components/Togglable'
 import NoteForm from '../components/NoteForm'
+import { Box, List, Switch, Typography } from '@mui/material'
 
-const Notes = ({ setErrorMessage, notes, setNotes, user }) => {
+const Notes = ({ notes, setNotes, user, setUser }) => {
   const [showAll, setShowAll] = useState(true)
 
-  const notesToShow = showAll ? notes : notes.filter(note => note.important)
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note => user.favoriteNotes.includes(note.id))
 
-  const toggleImportanceOf = id => {
-    const note = notes.find(n => n.id === id)
-    const changedNote = {
-      ...note,
-      important: !note.important,
-      user: note.user.id,
-    }
+  const toggleFavoriteOf = id => {
+    console.log(user)
 
     noteService
-      .update(id, changedNote)
+      .update(id, user.token)
       .then(returnedNote => {
-        setNotes(notes.map(note => (note.id !== id ? note : returnedNote)))
-      })
-      .catch(() => {
-        setErrorMessage(
-          `Note '${note.content}' was already removed from server`
+        setNotes(
+          notes.map(note => (note.id !== id ? note : returnedNote))
         )
 
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-
-        setNotes(notes.filter(n => n.id !== id))
+        if (user.favoriteNotes.includes(id)) {
+          const filteredNotes = user.favoriteNotes.filter(n => n !== id)
+          setUser({ ...user, favoriteNotes: filteredNotes })
+        } else {
+          const favoriteNotes = [...user.favoriteNotes, id]
+          setUser({ ...user, favoriteNotes })
+        }
       })
   }
 
   const noteFormRef = useRef()
 
-  const addNote = noteObject => {
+  const createNote = content => {
     noteFormRef.current.toggleVisibility()
-    noteService.create(noteObject).then(returnedNote => {
+    noteService.create(content, user.token).then(returnedNote => {
       setNotes(notes.concat(returnedNote))
     })
   }
 
   return (
     <div>
-      {user !== null && (
-        <div>
-          {
-            <Togglable buttonLabel='New note' ref={noteFormRef}>
-              <NoteForm createNote={addNote} />
-            </Togglable>
-          }
-        </div>
+      {user && (
+        <>
+          <Togglable buttonLabel='New note' ref={noteFormRef}>
+            <NoteForm createNote={createNote} />
+          </Togglable>
+          <Box textAlign='center' maxWidth='sm' display='flex' alignItems='center'>
+            <Switch
+              checked={!showAll}
+              onChange={() => setShowAll(!showAll)}
+            />
+            <Typography>
+              {showAll ? 'All notes' : 'Favorite notes'}
+            </Typography>
+          </Box>
+        </>
       )}
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          Show {showAll ? 'important' : 'all'}
-        </button>
-      </div>
-      <ul>
-        {notesToShow.map(note => (
+      <List>
+        {[...notesToShow].reverse().map(note => (
           <Note
             key={note.id}
             note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
+            user={user}
+            toggleFavorite={() => toggleFavoriteOf(note.id)}
           />
         ))}
-      </ul>
+      </List>
     </div>
   )
 }

@@ -1,8 +1,12 @@
+import { Box, Typography } from '@mui/material'
+
 const Home = () => {
   return (
-    <div>
-      <p>Esta página es una aplicación de notas</p>
-    </div>
+    <Box>
+      <Typography component='p' variant='h6' mt={2}>
+        Esta página es una aplicación de notas
+      </Typography>
+    </Box>
   )
 }
 

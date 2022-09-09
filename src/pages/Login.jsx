@@ -1,7 +1,13 @@
-import { useState } from 'react'
+import {
+  Button,
+  Container,
+  FormControl,
+  TextField,
+  Typography,
+} from '@mui/material'
 import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 import loginService from '../services/login'
-import noteService from '../services/notes'
 
 const Login = ({
   handleUsernameChange,
@@ -11,12 +17,11 @@ const Login = ({
   password,
   setPassword,
   setUser,
-  setErrorMessage
+  errorMessage,
+  setErrorMessage,
+  user,
 }) => {
-  const [loginVisible, setLoginVisible] = useState(false)
-
-  const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-  const showWhenVisible = { display: loginVisible ? '' : 'none' }
+  const navigate = useNavigate()
 
   const handleSubmit = async event => {
     event.preventDefault()
@@ -27,10 +32,13 @@ const Login = ({
         password,
       })
 
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
+      window.localStorage.setItem(
+        'loggedNoteappUser',
+        JSON.stringify(user)
+      )
 
-      noteService.setToken(user.token)
       setUser(user)
+      navigate('/notes')
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -41,41 +49,59 @@ const Login = ({
     }
   }
 
+  user && navigate('/')
   return (
-    <div>
-      <h2>Login</h2>
-
-      <div style={hideWhenVisible}>
-        <button onClick={() => setLoginVisible(true)}>log in</button>
-      </div>
-
-      <form onSubmit={handleSubmit} style={showWhenVisible}>
-        <div>
-          username
-          <input
+    <Container maxWidth='sm'>
+      <Typography mb='2rem' component='h2' variant='h3'>
+        Login
+      </Typography>
+      {!user && (
+        <FormControl
+          component='form'
+          fullWidth
+          onSubmit={handleSubmit}
+          sx={{ gap: '2rem' }}
+        >
+          <TextField
+            variant='outlined'
+            label='Username'
+            error={errorMessage === 'Wrong credentials'}
+            helperText={errorMessage}
             type='text'
             id='username'
             value={username}
             onChange={handleUsernameChange}
+            fullWidth
           />
-        </div>
-        <div>
-          password
-          <input
+          <TextField
+            variant='outlined'
+            label='Password'
+            error={errorMessage === 'Wrong credentials'}
+            helperText={errorMessage}
             type='password'
             id='password'
             value={password}
             onChange={handlePasswordChange}
+            fullWidth
           />
-        </div>
-        <button type='submit' id='login-button'>
-          login
-        </button>
-        <button type='button' onClick={() => setLoginVisible(false)}>
-          cancel
-        </button>
-      </form>
-    </div>
+          <Button
+            sx={{
+              backgroundColor: '#ADFF2F',
+              color: '#242424',
+              '&:hover': {
+                backgroundColor: '#2b2b2b',
+                color: '#fff',
+              },
+            }}
+            variant='contained'
+            type='submit'
+            id='login-button'
+          >
+            LOGIN
+          </Button>
+        </FormControl>
+      )}
+    </Container>
   )
 }
 

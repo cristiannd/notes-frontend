@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
-import Notification from './components/Notification'
 import Footer from './components/Footer'
 import noteService from './services/notes'
+import userService from 'services/users'
 import Notes from './pages/Notes'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
+import { Container, Typography } from '@mui/material'
+import User from './components/User'
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState('')
@@ -21,35 +23,52 @@ const App = () => {
     })
   }, [])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+  useEffect( () => {
+    const loggedUserJSON = window.localStorage.getItem(
+      'loggedNoteappUser'
+    )
+
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      noteService.setToken(user.token)
+      const userLocalStorage = JSON.parse(loggedUserJSON)
+      userService.getUser(userLocalStorage.id).then(user => {
+        setUser({ ...user, token: userLocalStorage.token })
+      })
     }
   }, [])
 
-  const handleLogout = () => {
-    setUser(null)
-    noteService.setToken('')
-    window.localStorage.removeItem('loggedNoteappUser')
-  }
-
   return (
-    <div>
+    <Container
+      maxWidth='md'
+      sx={{ minHeight: '100vh', paddingBottom: '50px' }}
+    >
       <header>
-        <Navbar />
-        <h1>Notes App</h1>
+        <Navbar user={user} />
+        <Typography
+          component='h1'
+          variant='h1'
+          mt={2}
+          textAlign='center'
+        >
+          Notes App
+        </Typography>
       </header>
-      {user && (
-        <div>
-          <p>{user.name} logged-in</p>
-          <button onClick={handleLogout}>logout</button>
-        </div>
-      )}
+
+      <User user={user} setUser={setUser} noteService={noteService} />
       <Routes>
         <Route path='/' element={<Home />} />
+
+        <Route
+          path='/notes'
+          element={
+            <Notes
+              setErrorMessage={setErrorMessage}
+              notes={notes}
+              setNotes={setNotes}
+              user={user}
+              setUser={setUser}
+            />
+          }
+        />
         <Route
           path='/login'
           element={
@@ -58,29 +77,22 @@ const App = () => {
               setUsername={setUsername}
               password={password}
               setPassword={setPassword}
+              user={user}
               setUser={setUser}
+              errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
-              handleUsernameChange={({ target }) => setUsername(target.value)}
-              handlePasswordChange={({ target }) => setPassword(target.value)}
-            />
-          }
-        />
-        <Route
-          path='/notes'
-          element={
-            <Notes
-              setErrorMessage={setErrorMessage}
-              notes={notes}
-              setNotes={setNotes}
+              handleUsernameChange={({ target }) =>
+                setUsername(target.value)
+              }
+              handlePasswordChange={({ target }) =>
+                setPassword(target.value)
+              }
             />
           }
         />
       </Routes>
-
-      <Notification message={errorMessage} />
-
       <Footer />
-    </div>
+    </Container>
   )
 }
 
