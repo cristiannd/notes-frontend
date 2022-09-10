@@ -4,7 +4,7 @@ const SnackbarNotification = ({
   notificationMessage,
   handleNotification,
 }) => {
-  const { type, content } = notificationMessage
+  const { open, type, content } = notificationMessage
 
   const handleClose = (_, reason) => {
     if (reason === 'clickaway') {
@@ -16,14 +16,14 @@ const SnackbarNotification = ({
 
   return (
     <Snackbar
-      open={Boolean(content)}
+      open={open}
       autoHideDuration={5000}
       onClose={handleClose}
     >
       <Alert
         variant='filled'
         onClose={handleClose}
-        severity={type || 'success'}
+        severity={type || 'error'}
         elevation={6}
         sx={{ width: '100%' }}
       >

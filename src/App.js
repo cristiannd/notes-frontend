@@ -13,6 +13,7 @@ import SnackbarNotification from 'components/SnackbarNotification'
 
 const App = () => {
   const [notificationMessage, setNotificationMessage] = useState({
+    open: false,
     type: '',
     content: '',
   })
@@ -42,13 +43,14 @@ const App = () => {
 
   const handleNotification = (type, content) => {
     if(!type) {
-      return setNotificationMessage({
-        type: '',
-        content: '',
-      })
+      return setNotificationMessage(prevState => ({
+        ...prevState,
+        open: false,
+      }))
     }
 
     setNotificationMessage({
+      open: true,
       type,
       content,
     })
