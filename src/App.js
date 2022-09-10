@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Box, Container } from '@mui/material'
 import noteService from 'services/notes'
@@ -9,16 +9,10 @@ import Login from 'pages/Login'
 import Footer from 'components/Footer'
 import Navbar from 'components/Navbar'
 import Register from 'pages/Register'
-import SnackbarNotification from 'components/SnackbarNotification'
+
+import { useSnackbar } from 'notistack'
 
 const App = () => {
-  const [notificationMessage, setNotificationMessage] = useState({
-    open: false,
-    type: '',
-    content: '',
-  })
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notes, setNotes] = useState([])
 
@@ -41,25 +35,19 @@ const App = () => {
     }
   }, [])
 
-  const handleNotification = (type, content) => {
-    if(!type) {
-      return setNotificationMessage(prevState => ({
-        ...prevState,
-        open: false,
-      }))
-    }
+  const { enqueueSnackbar } = useSnackbar();
 
-    setNotificationMessage({
-      open: true,
-      type,
-      content,
-    })
-  }
+  const handleNotification = useCallback(({message, variant, time}) => {
+    enqueueSnackbar(message, {
+      variant: variant,
+      autoHideDuration: time || 5000
+    });
+  }, [enqueueSnackbar])
 
   return (
     <>
       <Container
-        maxWidth='md'
+        maxWidth='sm'
         sx={{
           minHeight: 'calc(100vh - 3rem)',
         }}
@@ -87,32 +75,23 @@ const App = () => {
             path='/login'
             element={
               <Login
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
                 user={user}
                 setUser={setUser}
-                handleUsernameChange={({ target }) =>
-                  setUsername(target.value)
-                }
-                handlePasswordChange={({ target }) =>
-                  setPassword(target.value)
-                }
+                handleNotification={handleNotification}
               />
             }
           />
 
           <Route
             path='/register'
-            element={<Register user={user} setUser={setUser} />}
+            element={<Register
+              user={user}
+              setUser={setUser}
+              handleNotification={handleNotification}
+            />}
           />
         </Routes>
       </Container>
-      <SnackbarNotification
-        notificationMessage={notificationMessage}
-        handleNotification={handleNotification}
-      />
       <Footer />
     </>
   )

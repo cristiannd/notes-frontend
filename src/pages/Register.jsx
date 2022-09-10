@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import userService from 'services/users'
 
-const Register = ({ user, setUser }) => {
+const Register = ({ user, setUser, handleNotification }) => {
   const [name, setName] = useState('')
   const [lastname, setLastname] = useState('')
   const [username, setUsername] = useState('')
@@ -33,11 +33,19 @@ const Register = ({ user, setUser }) => {
     handleErrorInputPassword()
 
     const newUser = { name, lastname, username, password }
-    console.log({ name, lastname, username, password })
 
     try {
       await userService.register(newUser)
+      handleNotification({
+        message: '¡La cuenta se ha creado con éxito!',
+        variant: 'success',
+      })
       const user = await userService.login({ username, password })
+      handleNotification({
+        message: `¡Hola ${user.name}, bienvenid@ a postIT, disfruta de la aplicación!`,
+        variant: 'success',
+        time: 7000
+      })
 
       window.localStorage.setItem(
         'loggedNoteappUser',

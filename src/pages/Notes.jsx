@@ -1,7 +1,6 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import noteService from '../services/notes'
 import Note from '../components/Note'
-import Togglable from '../components/Togglable'
 import NoteForm from '../components/NoteForm'
 import { Box, List, Switch, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -22,10 +21,11 @@ const Notes = ({
 
   const toggleFavoriteOf = id => {
     if (!user) {
-      handleNotification(
-        'error',
-        'Para dar favorito debes iniciar sesión'
-      )
+      handleNotification({
+        message: 'Para dar favorito debes iniciar sesión',
+        variant: 'error',
+        time: 2000,
+      })
       return navigate('/login')
     }
 
@@ -49,37 +49,30 @@ const Notes = ({
       .catch(error => console.error('Error -->', error))
   }
 
-  const noteFormRef = useRef()
-
   const createNote = content => {
-    noteFormRef.current.toggleVisibility()
     noteService.create(content, user.token).then(returnedNote => {
       setNotes(notes.concat(returnedNote))
     })
   }
 
   return (
-    <div>
+    <Box pt='2rem'>
       {user && (
-        <>
-          <Togglable buttonLabel='New note' ref={noteFormRef}>
-            <NoteForm createNote={createNote} />
-          </Togglable>
-          <Box
-            textAlign='center'
-            maxWidth='sm'
-            display='flex'
-            alignItems='center'
-          >
-            <Switch
-              checked={!showAll}
-              onChange={() => setShowAll(!showAll)}
-            />
-            <Typography>
-              {showAll ? 'All notes' : 'Favorite notes'}
-            </Typography>
-          </Box>
-        </>
+        <NoteForm createNote={createNote} />
+        // <Box
+        //   textAlign='center'
+        //   maxWidth='sm'
+        //   display='flex'
+        //   alignItems='center'
+        // >
+        //   <Switch
+        //     checked={!showAll}
+        //     onChange={() => setShowAll(!showAll)}
+        //   />
+        //   <Typography>
+        //     {showAll ? 'All notes' : 'Favorite notes'}
+        //   </Typography>
+        // </Box>
       )}
       <List>
         {[...notesToShow].reverse().map(note => (
@@ -91,7 +84,7 @@ const Notes = ({
           />
         ))}
       </List>
-    </div>
+    </Box>
   )
 }
 

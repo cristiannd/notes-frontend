@@ -6,26 +6,38 @@ import {
   Typography,
 } from '@mui/material'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import userService from '../services/users'
 
 const Login = ({
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  setUsername,
-  password,
-  setPassword,
   setUser,
-  errorMessage,
-  setErrorMessage,
   user,
+  handleNotification
 }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const [usernameError, setUsernameError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+
   const navigate = useNavigate()
   user && navigate('/')
 
   const handleSubmit = async event => {
     event.preventDefault()
+
+    if(!username) {
+      return setUsernameError('Debes ingresar un nombre de usuario para continuar')
+    } else {
+      setUsernameError('')
+    }
+
+    if(!password) {
+      return setPasswordError('Debes ingresar un contraseña para continuar')
+    } else {
+      setPasswordError('')
+    }
 
     try {
       const user = await userService.login({
@@ -38,15 +50,20 @@ const Login = ({
         JSON.stringify(user)
       )
 
+      handleNotification({
+        message: `Hola ${user.name} 👋`,
+        variant: 'success'
+      })
+
       setUser(user)
       navigate('/')
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      handleNotification({
+        message: `El nombre de usuario "${username}" o la contraseña no existe, intentalo de nuevo`,
+        variant: 'error'
+      })
     }
   }
 
@@ -87,25 +104,25 @@ const Login = ({
         >
           <TextField
             variant='outlined'
-            label='Username'
-            error={errorMessage === 'Wrong credentials'}
-            helperText={errorMessage}
+            label='Nombre de usuario'
             type='text'
             id='username'
+            error={Boolean(usernameError)}
+            helperText={usernameError}
             value={username}
-            onChange={handleUsernameChange}
+            onChange={e => setUsername(e.target.value)}
             fullWidth
             sx={styledInput}
           />
           <TextField
             variant='outlined'
-            label='Password'
-            error={errorMessage === 'Wrong credentials'}
-            helperText={errorMessage}
+            label='Contraseña'
             type='password'
             id='password'
+            error={Boolean(passwordError)}
+            helperText={passwordError}
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
             fullWidth
             sx={styledInput}
           />
@@ -129,10 +146,8 @@ const Login = ({
 }
 
 Login.propTypes = {
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
+  setUser: PropTypes.func.isRequired,
+  handleNotification: PropTypes.func.isRequired,
 }
 
 export default Login

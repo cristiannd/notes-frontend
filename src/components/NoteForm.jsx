@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { Box } from '@mui/system'
 
 const NoteForm = ({ createNote }) => {
   const [newNote, setNewNote] = useState('')
@@ -14,17 +15,17 @@ const NoteForm = ({ createNote }) => {
     setNewNote(event.target.value)
   }
 
-  const addNote = event => {
+  const addNote = async event => {
     event.preventDefault()
 
-    createNote(newNote)
+    await createNote(newNote)
     setNewNote('')
   }
 
   return (
-    <div className='formDiv'>
+    <Box>
       <Typography component='h3' variant='h5'>
-        Create a new note
+        PUBLICA TU POST!
       </Typography>
 
       <FormControl
@@ -34,21 +35,31 @@ const NoteForm = ({ createNote }) => {
         component='form'
       >
         <TextField
-          label='Write a note'
-          variant='filled'
+          variant='standard'
+          multiline
+          placeholder='¿En qué piensas?'
           value={newNote}
           id='newNote'
           onChange={handleChange}
+          color='success'
         />
         <Button
-          sx={{ width: '100px' }}
+          size='small'
           variant='contained'
           type='submit'
+          disabled={!newNote.trim()}
+          sx={{
+            width: '100px',
+            bgcolor: 'var(--color-primary)',
+            '&:hover': {
+              bgcolor: 'var(--color-primary)',
+            },
+          }}
         >
-          Save
+          Postear
         </Button>
       </FormControl>
-    </div>
+    </Box>
   )
 }
 
