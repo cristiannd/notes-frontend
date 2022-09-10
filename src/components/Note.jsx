@@ -60,6 +60,14 @@ const Note = ({
       .catch(error => console.error(error))
   }
 
+  const formatDate = () => {
+    const date = new Date(note.date)
+    const options = { day: 'numeric', month: 'short', year: 'numeric' }
+
+    const formattedDate = date.toLocaleString('es-ES', options)
+    return formattedDate
+  }
+
   return (
     <ListItem
       className='note'
@@ -87,7 +95,7 @@ const Note = ({
       </ListItemAvatar>
       <ListItemText
         primary={note.content}
-        secondary={`@${note.user.username}`}
+        secondary={`@${note.user.username} · ${formatDate()}`}
       />
     </ListItem>
   )
