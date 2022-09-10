@@ -15,6 +15,7 @@ const Footer = () => {
       <Box display='flex' alignItems='center' gap='8px'>
         <Typography
           component='i'
+          lineHeight='1'
         >
           Made by
         </Typography>
@@ -23,7 +24,7 @@ const Footer = () => {
           component='strong'
           variant='p'
           color='var(--color-primary)'
-          fontSize='24px'
+          fontSize='1.5rem'
         >
           Cristian Donalicio
         </Typography>

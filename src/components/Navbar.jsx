@@ -74,7 +74,7 @@ const Navbar = ({ user, setUser }) => {
       <Container maxWidth='md'>
         <Toolbar disableGutters>
           <Typography
-            variant='h6'
+            variant='h5'
             noWrap
             component='a'
             onClick={() => navigate('/')}
@@ -86,6 +86,10 @@ const Navbar = ({ user, setUser }) => {
               textDecoration: 'none',
               transform: 'rotate(-5deg)',
               cursor: 'pointer',
+              transition: '.3s ease all',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
             }}
           >
             postIT
@@ -174,25 +178,44 @@ const Navbar = ({ user, setUser }) => {
           <Box
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
           >
-            {pages().map(
-              page =>
-                location.pathname !== page.pathname && (
-                  <Button
-                    key={page.name}
-                    onClick={handleCloseNavMenu}
+            {pages().map(page =>
+              location.pathname === page.pathname ? (
+                <Button
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    backgroundColor: '#fff',
+                    mx: '5px',
+                    '&:hover': {
+                      backgroundColor: '#fff',
+                    },
+                  }}
+                >
+                  <Link
+                    to={page.pathname}
+                    style={{
+                      color: 'var(--color-primary)',
+                      textDecoration: 'none',
+                      paddingTop: '2px',
+                    }}
                   >
-                    <Link
-                      to={page.pathname}
-                      style={{
-                        color: 'white',
-                        textDecoration: 'none',
-                        paddingTop: '2px',
-                      }}
-                    >
-                      {page.name}
-                    </Link>
-                  </Button>
-                )
+                    {page.name}
+                  </Link>
+                </Button>
+              ) : (
+                <Button key={page.name} onClick={handleCloseNavMenu}>
+                  <Link
+                    to={page.pathname}
+                    style={{
+                      color: '#fff',
+                      textDecoration: 'none',
+                      paddingTop: '2px',
+                    }}
+                  >
+                    {page.name}
+                  </Link>
+                </Button>
+              )
             )}
           </Box>
 
