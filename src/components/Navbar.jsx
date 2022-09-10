@@ -14,7 +14,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import User from './User'
+import UserMenu from './UserMenu'
 
 const Navbar = ({ user, setUser }) => {
   const [anchorElNav, setAnchorElNav] = useState(null)
@@ -239,7 +239,6 @@ const Navbar = ({ user, setUser }) => {
               </Tooltip>
               <Menu
                 sx={{ mt: '45px' }}
-                id='menu-appbar'
                 anchorEl={anchorElUser}
                 anchorOrigin={{
                   vertical: 'top',
@@ -255,7 +254,6 @@ const Navbar = ({ user, setUser }) => {
               >
                 <Typography
                   textAlign='center'
-                  borderBottom='1px solid var(--color-primary)'
                   px='0.5rem'
                   pb='0.5rem'
                 >
@@ -265,7 +263,7 @@ const Navbar = ({ user, setUser }) => {
                   onClick={handleCloseUserMenu}
                   sx={{ padding: 0 }}
                 >
-                  <User user={user} setUser={setUser} />
+                  <UserMenu user={user} setUser={setUser} />
                 </MenuItem>
               </Menu>
             </Box>

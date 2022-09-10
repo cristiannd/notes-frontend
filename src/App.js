@@ -11,8 +11,10 @@ import Navbar from 'components/Navbar'
 import Register from 'pages/Register'
 
 import { useSnackbar } from 'notistack'
-import User from 'components/User'
+import User from 'pages/User/User'
 import NotFound from 'pages/NotFound'
+import UserFavoriteNotes from 'pages/User/components/UserFavoriteNotes'
+import UserNotes from 'pages/User/components/UserNotes'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -71,7 +73,15 @@ const App = () => {
             }
           />
 
-          <Route path='/info' element={<Info />} />
+          {
+            user &&
+            <Route path={`${user.username}`} element={<User user={user} />}>
+              <Route path='notes' element={<UserNotes user={user} notes={notes} />} />
+              <Route path='favorites' element={<UserFavoriteNotes />} />
+            </Route>
+          }
+
+          <Route path='info' element={<Info />} />
 
           <Route
             path='/login'
