@@ -26,6 +26,7 @@ const Note = ({
   const navigate = useNavigate()
 
   const isFavorite = user && user.favoriteNotes.includes(note.id)
+  
   const favoriteIcon = isFavorite ? (
     <Favorite />
   ) : (

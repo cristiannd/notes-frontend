@@ -77,7 +77,7 @@ const App = () => {
             user &&
             <Route path={`${user.username}`} element={<User user={user} />}>
               <Route path='notes' element={<UserNotes user={user} notes={notes} />} />
-              <Route path='favorites' element={<UserFavoriteNotes />} />
+              <Route path='favorites' element={<UserFavoriteNotes user={user} notes={notes} />} />
             </Route>
           }
 

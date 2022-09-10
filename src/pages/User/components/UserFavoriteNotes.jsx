@@ -1,8 +1,16 @@
-import React from 'react'
+import { Box } from '@mui/material'
+import Note from 'components/Note'
 
-const UserFavoriteNotes = () => {
+const UserFavoriteNotes = ({ notes, user }) => {
   return (
-    <div>UserFavoriteNotes</div>
+    <Box>
+      {notes.map(
+        note =>
+          user.favoriteNotes.includes(note.id) && (
+            <Note key={note.id} note={note} user={user} />
+          )
+      )}
+    </Box>
   )
 }
 

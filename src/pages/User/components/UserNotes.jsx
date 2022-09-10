@@ -1,6 +1,5 @@
 import { Box } from '@mui/material'
 import Note from 'components/Note'
-import React from 'react'
 
 const UserNotes = ({ user, notes }) => {
   return (
