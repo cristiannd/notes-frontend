@@ -46,7 +46,7 @@ const Notes = ({
           setUser({ ...user, favoriteNotes })
         }
       })
-      .catch(error => console.error('Error -->', error))
+      .catch(error => console.error(error))
   }
 
   const createNote = content => {

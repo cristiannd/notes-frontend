@@ -11,6 +11,8 @@ import Navbar from 'components/Navbar'
 import Register from 'pages/Register'
 
 import { useSnackbar } from 'notistack'
+import User from 'components/User'
+import NotFound from 'pages/NotFound'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -90,6 +92,8 @@ const App = () => {
               handleNotification={handleNotification}
             />}
           />
+
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Container>
       <Footer />
