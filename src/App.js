@@ -9,9 +9,13 @@ import Login from 'pages/Login'
 import Footer from 'components/Footer'
 import Navbar from 'components/Navbar'
 import Register from 'pages/Register'
+import SnackbarNotification from 'components/SnackbarNotification'
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState({
+    type: '',
+    content: '',
+  })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -36,6 +40,20 @@ const App = () => {
     }
   }, [])
 
+  const handleNotification = (type, content) => {
+    if(!type) {
+      return setNotificationMessage({
+        type: '',
+        content: '',
+      })
+    }
+
+    setNotificationMessage({
+      type,
+      content,
+    })
+  }
+
   return (
     <>
       <Container
@@ -52,11 +70,11 @@ const App = () => {
             path='/'
             element={
               <Notes
-                setErrorMessage={setErrorMessage}
                 notes={notes}
                 setNotes={setNotes}
                 user={user}
                 setUser={setUser}
+                handleNotification={handleNotification}
               />
             }
           />
@@ -73,8 +91,6 @@ const App = () => {
                 setPassword={setPassword}
                 user={user}
                 setUser={setUser}
-                errorMessage={errorMessage}
-                setErrorMessage={setErrorMessage}
                 handleUsernameChange={({ target }) =>
                   setUsername(target.value)
                 }
@@ -91,6 +107,10 @@ const App = () => {
           />
         </Routes>
       </Container>
+      <SnackbarNotification
+        notificationMessage={notificationMessage}
+        handleNotification={handleNotification}
+      />
       <Footer />
     </>
   )
