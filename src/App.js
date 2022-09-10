@@ -6,19 +6,20 @@ import userService from 'services/users'
 import Notes from 'pages/Notes'
 import Info from 'pages/Info'
 import Login from 'pages/Login'
-import Footer from 'components/Footer'
-import Navbar from 'components/Navbar'
-import Register from 'pages/Register'
-
-import { useSnackbar } from 'notistack'
 import User from 'pages/User/User'
 import NotFound from 'pages/NotFound'
 import UserFavoriteNotes from 'pages/User/components/UserFavoriteNotes'
 import UserNotes from 'pages/User/components/UserNotes'
+import Register from 'pages/Register'
+import Footer from 'components/Footer'
+import Navbar from 'components/Navbar'
+import { useSnackbar } from 'notistack'
 
 const App = () => {
   const [user, setUser] = useState(null)
   const [notes, setNotes] = useState([])
+
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     noteService.getAll().then(initialNotes => {
@@ -39,7 +40,6 @@ const App = () => {
     }
   }, [])
 
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleNotification = useCallback(({message, variant, time}) => {
     enqueueSnackbar(message, {

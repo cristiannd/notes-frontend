@@ -7,6 +7,7 @@ const User = ({ user }) => {
     <Box mt='1rem' mb='2rem'>
       <Typography variant='h6' lineHeight='1'>{user.name} {user.lastname}</Typography>
       <Typography color='#535353'>@{user.username}</Typography>
+      
       <Outlet />
     </Box>
   )

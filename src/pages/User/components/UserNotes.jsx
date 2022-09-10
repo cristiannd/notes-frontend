@@ -3,9 +3,6 @@ import Note from 'components/Note'
 import React from 'react'
 
 const UserNotes = ({ user, notes }) => {
-  console.log(notes[0]?.user.id)
-  console.log(user?.id)
-
   return (
     <Box>
       {notes.map(
