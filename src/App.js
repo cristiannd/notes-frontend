@@ -19,7 +19,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notes, setNotes] = useState([])
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     noteService.getAll().then(initialNotes => {
@@ -40,13 +40,15 @@ const App = () => {
     }
   }, [])
 
-
-  const handleNotification = useCallback(({message, variant, time}) => {
-    enqueueSnackbar(message, {
-      variant: variant,
-      autoHideDuration: time || 5000
-    });
-  }, [enqueueSnackbar])
+  const handleNotification = useCallback(
+    ({ message, variant, time }) => {
+      enqueueSnackbar(message, {
+        variant: variant,
+        autoHideDuration: time || 5000,
+      })
+    },
+    [enqueueSnackbar]
+  )
 
   return (
     <>
@@ -73,13 +75,37 @@ const App = () => {
             }
           />
 
-          {
-            user &&
-            <Route path={`${user.username}`} element={<User user={user} />}>
-              <Route path='notes' element={<UserNotes user={user} notes={notes} />} />
-              <Route path='favorites' element={<UserFavoriteNotes user={user} notes={notes} />} />
+          {user && (
+            <Route
+              path={`${user.username}`}
+              element={<User user={user} />}
+            >
+              <Route
+                path='notes'
+                element={
+                  <UserNotes
+                    user={user}
+                    setUser={setUser}
+                    notes={notes}
+                    setNotes={setNotes}
+                    handleNotification={handleNotification}
+                  />
+                }
+              />
+              <Route
+                path='favorites'
+                element={
+                  <UserFavoriteNotes
+                    user={user}
+                    setUser={setUser}
+                    notes={notes}
+                    setNotes={setNotes}
+                    handleNotification={handleNotification}
+                  />
+                }
+              />
             </Route>
-          }
+          )}
 
           <Route path='info' element={<Info />} />
 
@@ -96,11 +122,13 @@ const App = () => {
 
           <Route
             path='/register'
-            element={<Register
-              user={user}
-              setUser={setUser}
-              handleNotification={handleNotification}
-            />}
+            element={
+              <Register
+                user={user}
+                setUser={setUser}
+                handleNotification={handleNotification}
+              />
+            }
           />
 
           <Route path='*' element={<NotFound />} />

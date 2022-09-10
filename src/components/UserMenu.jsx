@@ -8,15 +8,18 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const UserMenu = ({ user, setUser }) => {
   const [open, setOpen] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedNoteappUser')
     setOpen(false)
+    navigate('/')
   }
 
   const styledAnchor = {

@@ -13,8 +13,8 @@ import noteService from '../services/notes'
 import ProfileIcon from './ProfileIcon'
 
 const Note = ({
-  notes,
   note,
+  notes,
   setNotes,
   user,
   setUser,

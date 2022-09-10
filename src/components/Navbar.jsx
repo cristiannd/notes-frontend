@@ -21,6 +21,9 @@ const Navbar = ({ user, setUser }) => {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const userLoginPages = [
     {
       name: 'Información',
@@ -47,9 +50,6 @@ const Navbar = ({ user, setUser }) => {
 
     return userLogoutPages
   }
-
-  const navigate = useNavigate()
-  const location = useLocation()
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget)
@@ -234,7 +234,6 @@ const Navbar = ({ user, setUser }) => {
                       fontSize: '1.2rem',
                     }}
                   >
-                    {/* {`${user?.name.charAt(0)}`} */}
                     <ProfileIcon userId={user.id} />
                   </Avatar>
                 </IconButton>

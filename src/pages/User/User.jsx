@@ -1,19 +1,26 @@
 import { Box, Tab, Tabs, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 const User = ({ user }) => {
   const [tabValue, setTabValue] = useState(0)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
-  const handleChange = (newValue) => {
+  useEffect(() => {
+    if (pathname === `/${user.username}/favorites`) {
+      setTabValue(1)
+    }
+  }, [pathname, user.username])
+
+  const handleChange = newValue => {
     setTabValue(newValue)
 
-    if(newValue === 0) {
+    if (newValue === 0) {
       return navigate('notes')
     }
-    
-    if(newValue === 1) {
+
+    if (newValue === 1) {
       return navigate('favorites')
     }
   }
