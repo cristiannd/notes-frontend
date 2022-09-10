@@ -15,6 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
+import ProfileIcon from './ProfileIcon'
 
 const Navbar = ({ user, setUser }) => {
   const [anchorElNav, setAnchorElNav] = useState(null)
@@ -233,7 +234,8 @@ const Navbar = ({ user, setUser }) => {
                       fontSize: '1.2rem',
                     }}
                   >
-                    {`${user?.name.charAt(0)}`}
+                    {/* {`${user?.name.charAt(0)}`} */}
+                    <ProfileIcon userId={user.id} />
                   </Avatar>
                 </IconButton>
               </Tooltip>

@@ -1,8 +1,4 @@
-import {
-  Favorite,
-  FavoriteBorderOutlined,
-  Person,
-} from '@mui/icons-material'
+import { Favorite, FavoriteBorderOutlined } from '@mui/icons-material'
 import {
   Avatar,
   IconButton,
@@ -14,6 +10,7 @@ import {
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import noteService from '../services/notes'
+import ProfileIcon from './ProfileIcon'
 
 const Note = ({
   notes,
@@ -26,7 +23,7 @@ const Note = ({
   const navigate = useNavigate()
 
   const isFavorite = user && user.favoriteNotes.includes(note.id)
-  
+
   const favoriteIcon = isFavorite ? (
     <Favorite />
   ) : (
@@ -77,8 +74,15 @@ const Note = ({
       }
     >
       <ListItemAvatar>
-        <Avatar>
-          <Person />
+        <Avatar
+          sx={{
+            bgcolor: 'transparent',
+            border: '1px solid #dedede',
+            display: 'grid',
+            placeContent: 'center'
+          }}
+        >
+          <ProfileIcon userId={note.user.id} />
         </Avatar>
       </ListItemAvatar>
       <ListItemText
