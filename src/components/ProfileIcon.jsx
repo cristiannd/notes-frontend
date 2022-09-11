@@ -27,8 +27,8 @@ const ProfileIcon = ({ userId }) => {
 
   const getIcon = () => {
     const lastChar = userId.charAt(userId.length-1)
-
-    if(Number(lastChar)) {
+console.log(lastChar)
+    if(Number(lastChar) || Number(lastChar) === 0 ) {
       return icons[lastChar]
     }
 

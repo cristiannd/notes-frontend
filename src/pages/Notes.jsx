@@ -22,7 +22,7 @@ const Notes = ({
       {user && (
         <NoteForm createNote={createNote} />
       )}
-      <List>
+      <List sx={{ p: 0 }}>
         {[...notes].reverse().map(note => (
           <Note
             key={note.id}

@@ -51,9 +51,6 @@ const UserMenu = ({ user, setUser }) => {
             </Link>
           </Button>
           <Button sx={{ padding: 0 }}>
-            <Link to={`${user.username}/favorites`} style={styledAnchor}>
-              Favoritos
-            </Link>
           </Button>
           <Button onClick={() => setOpen(true)} color='inherit'>
             Cerrar sesión

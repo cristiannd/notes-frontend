@@ -74,6 +74,7 @@ const Note = ({
       sx={{
         border: '1px solid #dedede',
         borderTop: '0',
+        // bgcolor: 'pink',
         py: '1rem'
       }}
       secondaryAction={
@@ -92,7 +93,7 @@ const Note = ({
             bgcolor: 'transparent',
             border: '1px solid #dedede',
             display: 'grid',
-            placeContent: 'center'
+            placeContent: 'center',
           }}
         >
           <ProfileIcon userId={note.user.id} />
@@ -101,6 +102,7 @@ const Note = ({
       <ListItemText
         primary={note.content}
         secondary={`@${note.user.username} · ${formatDate()}`}
+        sx={{ pr: '1rem' }}
       />
     </ListItem>
   )

@@ -24,15 +24,7 @@ const Navbar = ({ user, setUser }) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const userLoginPages = [
-    {
-      name: 'Información',
-      pathname: '/info',
-    },
-  ]
-
-  const userLogoutPages = [
-    ...userLoginPages,
+  const pages = [
     {
       name: 'Iniciar sesión',
       pathname: '/login',
@@ -42,14 +34,6 @@ const Navbar = ({ user, setUser }) => {
       pathname: '/register',
     },
   ]
-
-  const pages = () => {
-    if (user) {
-      return userLoginPages
-    }
-
-    return userLogoutPages
-  }
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget)
@@ -127,7 +111,7 @@ const Navbar = ({ user, setUser }) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages().map(
+              {!user && pages.map(
                 page =>
                   location.pathname !== page.pathname && (
                     <MenuItem
@@ -179,7 +163,7 @@ const Navbar = ({ user, setUser }) => {
           <Box
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
           >
-            {pages().map(page =>
+            {!user && pages.map(page =>
               location.pathname === page.pathname ? (
                 <Button
                   key={page.name}

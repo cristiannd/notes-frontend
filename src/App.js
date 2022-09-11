@@ -4,7 +4,6 @@ import { Box, Container } from '@mui/material'
 import noteService from 'services/notes'
 import userService from 'services/users'
 import Notes from 'pages/Notes'
-import Info from 'pages/Info'
 import Login from 'pages/Login'
 import User from 'pages/User/User'
 import NotFound from 'pages/NotFound'
@@ -53,7 +52,7 @@ const App = () => {
   return (
     <>
       <Container
-        maxWidth='sm'
+        maxWidth='md'
         sx={{
           minHeight: 'calc(100vh - 3rem)',
         }}
@@ -106,8 +105,6 @@ const App = () => {
               />
             </Route>
           )}
-
-          <Route path='info' element={<Info />} />
 
           <Route
             path='/login'
