@@ -44,14 +44,15 @@ const UserMenu = ({ user, setUser }) => {
           variant='text'
           fullWidth
           color='success'
+          sx={{ bgcolor: '#fff' }}
+          
         >
           <Button sx={{ padding: 0 }}>
             <Link to={`${user.username}/notes`} style={styledAnchor}>
               Perfil
             </Link>
           </Button>
-          <Button sx={{ padding: 0 }}>
-          </Button>
+          <Button sx={{ padding: 0 }}></Button>
           <Button onClick={() => setOpen(true)} color='inherit'>
             Cerrar sesión
           </Button>
