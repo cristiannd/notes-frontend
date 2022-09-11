@@ -110,11 +110,11 @@ const Register = ({ user, setUser, handleNotification }) => {
   }
 
   const handleErrorInputPassword = () => {
-    const regexLength = /^.{8,}$/
+    const minLengthPassword = 8
 
-    if (!regexLength.test(password)) {
+    if (password < minLengthPassword) {
       return setErrorPassword(
-        'La contraseña debe contener al menos 8 caracteres.'
+        `La contraseña debe contener al menos ${minLengthPassword} caracteres.`
       )
     }
 
