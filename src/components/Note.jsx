@@ -71,6 +71,11 @@ const Note = ({
   return (
     <ListItem
       className='note'
+      sx={{
+        border: '1px solid #dedede',
+        borderTop: '0',
+        py: '1rem'
+      }}
       secondaryAction={
         <Tooltip
           title={isFavorite ? 'Quitar favorito' : 'Dar favorito'}
