@@ -18,7 +18,7 @@ const Notes = ({
   }
 
   return (
-    <Box pt='2rem'>
+    <Box>
       {user && (
         <NoteForm createNote={createNote} />
       )}
