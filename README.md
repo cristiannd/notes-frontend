@@ -1,14 +1,14 @@
 <a name="readme-top"></a>
 <div align="center">
     <h1>postIT</h1>
-<!--     <img src="https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/images/screenshot.png" alt="Imagen del proyecto" /> -->
+<!--     <img src="https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/images/screenshot.png" alt="Project's image" /> -->
 </div>
 
 The app is a small social media, inspired by [Twitter](https://twitter.com/), where the tweets are replaced with short notes. You can give a _favorite_ to other users’ notes and even your own. As well you have the possibility to filter your notes or your favorite ones.
 <br>
 
 <details>
-  <summary>Tabla de contenidos</summary>
+  <summary>Index</summary>
   <ol>
     <li>
       <a href="#about-the-project">About the project</a>
