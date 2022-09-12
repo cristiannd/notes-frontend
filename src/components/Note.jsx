@@ -74,7 +74,6 @@ const Note = ({
       sx={{
         border: '1px solid #dedede',
         borderTop: '0',
-        // bgcolor: 'pink',
         py: '1rem'
       }}
       secondaryAction={

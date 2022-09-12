@@ -13,16 +13,20 @@ import Register from 'pages/Register'
 import Footer from 'components/Footer'
 import Navbar from 'components/Navbar'
 import { useSnackbar } from 'notistack'
+import Loading from 'components/Loading'
 
 const App = () => {
   const [user, setUser] = useState(null)
   const [notes, setNotes] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
+    setIsLoading(true)
     noteService.getAll().then(initialNotes => {
       setNotes(initialNotes)
+      setIsLoading(false)
     })
   }, [])
 
@@ -60,6 +64,10 @@ const App = () => {
         <Box component='header' pb='4rem'>
           <Navbar user={user} setUser={setUser} />
         </Box>
+
+
+        {isLoading ? <Loading /> : ''}
+
         <Routes>
           <Route
             path='/'
@@ -128,7 +136,7 @@ const App = () => {
             }
           />
 
-          <Route path='*' element={<NotFound />} />
+          {!isLoading && <Route path='*' element={<NotFound />} />}
         </Routes>
       </Container>
       <Footer />
