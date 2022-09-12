@@ -66,8 +66,8 @@ const UserMenu = ({ user, setUser }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleLogout}>Aceptar</Button>
           <Button onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button onClick={handleLogout}>Aceptar</Button>
         </DialogActions>
       </Dialog>
     </>
