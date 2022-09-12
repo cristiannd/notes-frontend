@@ -6,6 +6,7 @@ import {
   ListItemAvatar,
   ListItemText,
   Tooltip,
+  Typography,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
@@ -62,7 +63,11 @@ const Note = ({
 
   const formatDate = () => {
     const date = new Date(note.date)
-    const options = { day: 'numeric', month: 'short', year: 'numeric' }
+    const options = {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    }
 
     const formattedDate = date.toLocaleString('es-ES', options)
     return formattedDate
@@ -74,15 +79,22 @@ const Note = ({
       sx={{
         border: '1px solid #dedede',
         borderTop: '0',
-        py: '1rem'
+        py: '1rem',
       }}
       secondaryAction={
         <Tooltip
           title={isFavorite ? 'Quitar favorito' : 'Dar favorito'}
         >
-          <IconButton onClick={() => toggleFavorite(note.id)}>
-            {favoriteIcon}
-          </IconButton>
+          <>
+            {Boolean(note.favorites.length) && (
+              <Typography variant='overline'>
+                {note.favorites.length}
+              </Typography>
+            )}
+            <IconButton onClick={() => toggleFavorite(note.id)}>
+              {favoriteIcon}
+            </IconButton>
+          </>
         </Tooltip>
       }
     >
@@ -101,7 +113,7 @@ const Note = ({
       <ListItemText
         primary={note.content}
         secondary={`@${note.user.username} · ${formatDate()}`}
-        sx={{ pr: '1rem' }}
+        sx={{ pr: '2.5rem' }}
       />
     </ListItem>
   )
