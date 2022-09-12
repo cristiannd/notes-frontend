@@ -23,11 +23,7 @@ const App = () => {
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    setIsLoading(true)
-    noteService.getAll().then(initialNotes => {
-      setNotes(initialNotes)
-      setIsLoading(false)
-    })
+    getAllNotes()
   }, [])
 
   useEffect(() => {
@@ -53,6 +49,14 @@ const App = () => {
     [enqueueSnackbar]
   )
 
+  const getAllNotes = () => {
+    setIsLoading(true)
+    noteService.getAll().then(initialNotes => {
+      setNotes(initialNotes)
+      setIsLoading(false)
+    })
+  }
+
   return (
     <>
       <Container
@@ -62,7 +66,7 @@ const App = () => {
         }}
       >
         <Box component='header' pb='4rem'>
-          <Navbar user={user} setUser={setUser} />
+          <Navbar user={user} setUser={setUser} getAllNotes={getAllNotes} />
         </Box>
 
 
@@ -78,6 +82,7 @@ const App = () => {
                 user={user}
                 setUser={setUser}
                 handleNotification={handleNotification}
+                getAllNotes={getAllNotes}
               />
             }
           />

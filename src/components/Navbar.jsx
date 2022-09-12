@@ -17,7 +17,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
 import ProfileIcon from './ProfileIcon'
 
-const Navbar = ({ user, setUser }) => {
+const Navbar = ({ user, setUser, getAllNotes }) => {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -51,6 +51,11 @@ const Navbar = ({ user, setUser }) => {
     setAnchorElUser(null)
   }
 
+  const handleOnClickLogo = () => {
+    navigate('/')
+    getAllNotes()
+  }
+
   return (
     <AppBar
       position='fixed'
@@ -62,7 +67,7 @@ const Navbar = ({ user, setUser }) => {
             variant='h5'
             noWrap
             component='a'
-            onClick={() => navigate('/')}
+            onClick={handleOnClickLogo}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -148,7 +153,7 @@ const Navbar = ({ user, setUser }) => {
               variant='h4'
               noWrap
               component='a'
-              onClick={() => navigate('/')}
+              onClick={handleOnClickLogo}
               sx={{
                 display: { xs: 'flex', md: 'none' },
                 fontWeight: 700,

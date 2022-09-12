@@ -10,11 +10,15 @@ const Notes = ({
   user,
   setUser,
   handleNotification,
+  getAllNotes
 }) => {
   const createNote = content => {
-    noteService.create(content, user.token).then(returnedNote => {
-      setNotes(notes.concat(returnedNote))
-    })
+    noteService
+      .create(content, user.token)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+      })
+      .then(() => getAllNotes())
   }
 
   return (
