@@ -10,19 +10,23 @@ const Notes = ({
   user,
   setUser,
   handleNotification,
+  getAllNotes
 }) => {
   const createNote = content => {
-    noteService.create(content, user.token).then(returnedNote => {
-      setNotes(notes.concat(returnedNote))
-    })
+    noteService
+      .create(content, user.token)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+      })
+      .then(() => getAllNotes())
   }
 
   return (
-    <Box pt='2rem'>
+    <Box>
       {user && (
         <NoteForm createNote={createNote} />
       )}
-      <List>
+      <List sx={{ p: 0 }}>
         {[...notes].reverse().map(note => (
           <Note
             key={note.id}

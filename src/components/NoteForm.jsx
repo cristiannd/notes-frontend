@@ -23,9 +23,14 @@ const NoteForm = ({ createNote }) => {
   }
 
   return (
-    <Box>
-      <Typography component='h3' variant='h5'>
-        PUBLICA TU POST!
+    <Box sx={{
+      py: '1rem',
+      px: '2rem',
+      border: '1px solid #dedede',
+      borderTop: 'none'
+    }}>
+      <Typography component='h3' variant='h6'>
+        Publica un post
       </Typography>
 
       <FormControl

@@ -44,17 +44,15 @@ const UserMenu = ({ user, setUser }) => {
           variant='text'
           fullWidth
           color='success'
+          sx={{ bgcolor: '#fff' }}
+          
         >
           <Button sx={{ padding: 0 }}>
             <Link to={`${user.username}/notes`} style={styledAnchor}>
               Perfil
             </Link>
           </Button>
-          <Button sx={{ padding: 0 }}>
-            <Link to={`${user.username}/favorites`} style={styledAnchor}>
-              Favoritos
-            </Link>
-          </Button>
+          <Button sx={{ padding: 0 }}></Button>
           <Button onClick={() => setOpen(true)} color='inherit'>
             Cerrar sesión
           </Button>
@@ -68,8 +66,8 @@ const UserMenu = ({ user, setUser }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleLogout}>Aceptar</Button>
           <Button onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button onClick={handleLogout}>Aceptar</Button>
         </DialogActions>
       </Dialog>
     </>

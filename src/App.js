@@ -4,7 +4,6 @@ import { Box, Container } from '@mui/material'
 import noteService from 'services/notes'
 import userService from 'services/users'
 import Notes from 'pages/Notes'
-import Info from 'pages/Info'
 import Login from 'pages/Login'
 import User from 'pages/User/User'
 import NotFound from 'pages/NotFound'
@@ -14,17 +13,17 @@ import Register from 'pages/Register'
 import Footer from 'components/Footer'
 import Navbar from 'components/Navbar'
 import { useSnackbar } from 'notistack'
+import Loading from 'components/Loading'
 
 const App = () => {
   const [user, setUser] = useState(null)
   const [notes, setNotes] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    noteService.getAll().then(initialNotes => {
-      setNotes(initialNotes)
-    })
+    getAllNotes()
   }, [])
 
   useEffect(() => {
@@ -50,17 +49,29 @@ const App = () => {
     [enqueueSnackbar]
   )
 
+  const getAllNotes = () => {
+    setIsLoading(true)
+    noteService.getAll().then(initialNotes => {
+      setNotes(initialNotes)
+      setIsLoading(false)
+    })
+  }
+
   return (
     <>
       <Container
-        maxWidth='sm'
+        maxWidth='md'
         sx={{
           minHeight: 'calc(100vh - 3rem)',
         }}
       >
         <Box component='header' pb='4rem'>
-          <Navbar user={user} setUser={setUser} />
+          <Navbar user={user} setUser={setUser} getAllNotes={getAllNotes} />
         </Box>
+
+
+        {isLoading ? <Loading /> : ''}
+
         <Routes>
           <Route
             path='/'
@@ -71,6 +82,7 @@ const App = () => {
                 user={user}
                 setUser={setUser}
                 handleNotification={handleNotification}
+                getAllNotes={getAllNotes}
               />
             }
           />
@@ -107,8 +119,6 @@ const App = () => {
             </Route>
           )}
 
-          <Route path='info' element={<Info />} />
-
           <Route
             path='/login'
             element={
@@ -131,7 +141,7 @@ const App = () => {
             }
           />
 
-          <Route path='*' element={<NotFound />} />
+          {!isLoading && <Route path='*' element={<NotFound />} />}
         </Routes>
       </Container>
       <Footer />

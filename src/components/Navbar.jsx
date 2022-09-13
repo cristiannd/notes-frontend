@@ -17,22 +17,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
 import ProfileIcon from './ProfileIcon'
 
-const Navbar = ({ user, setUser }) => {
+const Navbar = ({ user, setUser, getAllNotes }) => {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
   const navigate = useNavigate()
   const location = useLocation()
 
-  const userLoginPages = [
-    {
-      name: 'Información',
-      pathname: '/info',
-    },
-  ]
-
-  const userLogoutPages = [
-    ...userLoginPages,
+  const pages = [
     {
       name: 'Iniciar sesión',
       pathname: '/login',
@@ -42,14 +34,6 @@ const Navbar = ({ user, setUser }) => {
       pathname: '/register',
     },
   ]
-
-  const pages = () => {
-    if (user) {
-      return userLoginPages
-    }
-
-    return userLogoutPages
-  }
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget)
@@ -67,6 +51,11 @@ const Navbar = ({ user, setUser }) => {
     setAnchorElUser(null)
   }
 
+  const handleOnClickLogo = () => {
+    navigate('/')
+    getAllNotes()
+  }
+
   return (
     <AppBar
       position='fixed'
@@ -78,7 +67,7 @@ const Navbar = ({ user, setUser }) => {
             variant='h5'
             noWrap
             component='a'
-            onClick={() => navigate('/')}
+            onClick={handleOnClickLogo}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -96,56 +85,62 @@ const Navbar = ({ user, setUser }) => {
             postIT
           </Typography>
 
-          <Box
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-          >
-            <IconButton
-              size='large'
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              onClick={handleOpenNavMenu}
-              color='inherit'
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id='menu-appbar'
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+          {!user && (
+            <Box
               sx={{
-                display: { xs: 'block', md: 'none' },
+                flexGrow: 1,
+                display: { xs: 'flex', md: 'none' },
               }}
             >
-              {pages().map(
-                page =>
-                  location.pathname !== page.pathname && (
-                    <MenuItem
-                      key={page.name}
-                      onClick={handleCloseNavMenu}
-                    >
-                      <Typography
-                        textAlign='center'
-                        onClick={() => navigate(page.pathname)}
-                        component='a'
+              <IconButton
+                size='large'
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+                onClick={handleOpenNavMenu}
+                color='inherit'
+              >
+                <MenuIcon />
+              </IconButton>
+
+              <Menu
+                id='menu-appbar'
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {pages.map(
+                  page =>
+                    location.pathname !== page.pathname && (
+                      <MenuItem
+                        key={page.name}
+                        onClick={handleCloseNavMenu}
                       >
-                        {page.name}
-                      </Typography>
-                    </MenuItem>
-                  )
-              )}
-            </Menu>
-          </Box>
+                        <Typography
+                          textAlign='center'
+                          onClick={() => navigate(page.pathname)}
+                          component='a'
+                        >
+                          {page.name}
+                        </Typography>
+                      </MenuItem>
+                    )
+                )}
+              </Menu>
+            </Box>
+          )}
           <Box
             width='100%'
             display='flex'
@@ -158,7 +153,7 @@ const Navbar = ({ user, setUser }) => {
               variant='h4'
               noWrap
               component='a'
-              onClick={() => navigate('/')}
+              onClick={handleOnClickLogo}
               sx={{
                 display: { xs: 'flex', md: 'none' },
                 fontWeight: 700,
@@ -179,45 +174,49 @@ const Navbar = ({ user, setUser }) => {
           <Box
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
           >
-            {pages().map(page =>
-              location.pathname === page.pathname ? (
-                <Button
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    backgroundColor: '#fff',
-                    mx: '5px',
-                    '&:hover': {
+            {!user &&
+              pages.map(page =>
+                location.pathname === page.pathname ? (
+                  <Button
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
+                    sx={{
                       backgroundColor: '#fff',
-                    },
-                  }}
-                >
-                  <Link
-                    to={page.pathname}
-                    style={{
-                      color: 'var(--color-primary)',
-                      textDecoration: 'none',
-                      paddingTop: '2px',
+                      mx: '5px',
+                      '&:hover': {
+                        backgroundColor: '#fff',
+                      },
                     }}
                   >
-                    {page.name}
-                  </Link>
-                </Button>
-              ) : (
-                <Button key={page.name} onClick={handleCloseNavMenu}>
-                  <Link
-                    to={page.pathname}
-                    style={{
-                      color: '#fff',
-                      textDecoration: 'none',
-                      paddingTop: '2px',
-                    }}
+                    <Link
+                      to={page.pathname}
+                      style={{
+                        color: 'var(--color-primary)',
+                        textDecoration: 'none',
+                        paddingTop: '2px',
+                      }}
+                    >
+                      {page.name}
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
                   >
-                    {page.name}
-                  </Link>
-                </Button>
-              )
-            )}
+                    <Link
+                      to={page.pathname}
+                      style={{
+                        color: '#fff',
+                        textDecoration: 'none',
+                        paddingTop: '2px',
+                      }}
+                    >
+                      {page.name}
+                    </Link>
+                  </Button>
+                )
+              )}
           </Box>
 
           {user && (
